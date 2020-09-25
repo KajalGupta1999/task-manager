@@ -1,7 +1,7 @@
 const express=require('express')
 require('./db/mongoose')
-const userRouter=require('./routers/user')
-const taskRouter=require('./routers/task')
+const userRouter=require('../src/routers/user')
+const taskRouter=require('../src/routers/task')
 const app=express()
 const port=process.env.PORT||3000
 // app.use((req,res,next)=>{
@@ -28,7 +28,6 @@ const jwt=require('jsonwebtoken')
 const myFunction=async()=>{
     const token=jwt.sign({_id:'abc123'},'thismynewcourse',{expiresIn:'7 days'})
     console.log(token)
-
     const data=jwt.verify(token,'thismynewcourse')
     console.log(data)
 }

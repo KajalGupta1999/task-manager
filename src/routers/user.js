@@ -16,20 +16,35 @@ router.post('/users/login',async(req,res)=>{
     try{
         const user=await User.findByCredentials(req.body.email,req.body.password)
         const token=await user.generateAuthToken()
-        res.send({user,token})
+        res.send({user, token })
     }catch(e)
     {
         res.status(400).send()
     }
 })
-router.get('/users',auth,async(req,res)=>{
-    try
-    {
-        const user=await User.find({})
-        res.send(user)
+router.post('/users/logout',auth,async(req,res)=>{
+    try{
+        req.user.tokens=req.user.tokens.filter((token)=>{
+            return token.token!=req.token
+        })
+        await req.user.save()
+        res.send()
     }catch(e){
         res.status(500).send()
     }
+})
+router.post('/users/logoutAll',auth,async(req,res)=>{
+    try{
+        req.user.tokens=[]
+        await req.user.save()
+        res.send()
+    }catch(e){
+        res.status(500).send()
+    }
+})
+
+router.get('/users/me',auth,async(req,res)=>{
+    res.send(req.user)
 })
 router.get('/users/:id',auth,async(req,res)=>{
     const _id=req.params._id
