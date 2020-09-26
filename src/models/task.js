@@ -4,11 +4,15 @@ const Task=mongoose.model('Task',{
     description:{
         type:String,
         trim:true,
-        require:true
+        required:true
     },
     status:{
         type:Boolean,
         default:false
+    },
+    owner:{
+        type:mongoose.Schema.Types.ObjectId,
+        required:true
     }
 })
 module.exports=Task
